@@ -62,7 +62,7 @@
         @Column(name = "active")
         private Boolean active;
 
-        @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+        @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
         @JsonManagedReference
         private List<OrderDetail> orderDetails;
 
