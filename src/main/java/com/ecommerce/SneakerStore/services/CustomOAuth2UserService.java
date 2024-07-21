@@ -1,6 +1,6 @@
 package com.ecommerce.SneakerStore.services;
 
-import com.ecommerce.SneakerStore.entities.CustomOAuth2User;
+
 import com.ecommerce.SneakerStore.entities.Role;
 import com.ecommerce.SneakerStore.entities.User;
 import com.ecommerce.SneakerStore.repositories.RoleRepository;

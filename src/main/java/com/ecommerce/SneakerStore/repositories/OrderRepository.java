@@ -11,7 +11,7 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order,Long> {
     List<Order> findByUser(User user);
 
-    @Query("SELECT SUM(o.totalMoney) FROM Order o")
+    @Query("SELECT IFNULL(SUM(o.totalMoney),0) FROM Order o")
     long totalEarning();
 
     @Query("SELECT COUNT(o) FROM Order o WHERE MONTH(o.orderDate) = :month")

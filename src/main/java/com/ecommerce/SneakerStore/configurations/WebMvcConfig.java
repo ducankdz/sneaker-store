@@ -1,7 +1,6 @@
 package com.ecommerce.SneakerStore.configurations;
 
 import com.ecommerce.SneakerStore.components.AuthInterceptor;
-import com.ecommerce.SneakerStore.components.SessionListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -87,8 +86,5 @@ public class WebMvcConfig extends WebMvcConfigurationSupport  {
         viewResolver.setCharacterEncoding("UTF-8");
         return viewResolver;
     }
-    @Bean
-    public SessionListener sessionListener(){
-        return new SessionListener();
-    }
+
 }

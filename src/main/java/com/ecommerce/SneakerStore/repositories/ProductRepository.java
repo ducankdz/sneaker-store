@@ -44,7 +44,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "LEFT JOIN OrderDetail o\n" +
             "ON p.id = o.product.id\n" +
             "GROUP BY p.id\n" +
-            "ORDER BY SUM(o.numberOfProducts) DESC")
+            "ORDER BY IFNULL(SUM(o.numberOfProducts),0) DESC")
     Page<Product> getProductByPopularity(Pageable pageable);
 
     @Query("SELECT p FROM Product p " +
@@ -55,7 +55,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             @Param("maxPrice") Long maxPrice,
             Pageable pageable);
 
-    @Query("SELECT SUM(od.numberOfProducts) FROM OrderDetail od")
+    @Query("SELECT IFNULL(SUM(od.numberOfProducts),0) FROM OrderDetail od")
     long countProductsSold();
 
     @Query("SELECT IFNULL(SUM(od.numberOfProducts),0) " +
@@ -64,7 +64,7 @@ public interface ProductRepository extends JpaRepository<Product,Long> {
             "AND MONTH(o.orderDate) = :month")
     long countProductsSoldByMonth(int month);
 
-    @Query("SELECT new com.ecommerce.SneakerStore.responses.ProductSaleResponse(p, SUM(od.numberOfProducts)) " +
+    @Query("SELECT new com.ecommerce.SneakerStore.responses.ProductSaleResponse(p, IFNULL(SUM(od.numberOfProducts),0)) " +
             "FROM OrderDetail od JOIN od.product p " +
             "GROUP BY p.id, p.name " +
             "ORDER BY SUM(od.numberOfProducts) DESC")

@@ -1,5 +1,11 @@
 server:
-  port: 8087
+  port: 8080
+  servlet:
+    session:
+      cookie:
+        secure: true
+        http-only: true
+        same-site: Lax  # or None if you need to support cross-site requests
 
 spring:
   datasource:

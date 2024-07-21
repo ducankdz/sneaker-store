@@ -1,6 +1,5 @@
 package com.ecommerce.SneakerStore.controllers;
 
-import com.ecommerce.SneakerStore.components.SessionListener;
 import com.ecommerce.SneakerStore.dtos.CategoryDTO;
 import com.ecommerce.SneakerStore.dtos.CouponDTO;
 import com.ecommerce.SneakerStore.dtos.ProductDTO;
@@ -10,7 +9,6 @@ import com.ecommerce.SneakerStore.responses.OrderResponse;
 import com.ecommerce.SneakerStore.responses.ProductResponse;
 import com.ecommerce.SneakerStore.responses.ProductSaleResponse;
 import com.ecommerce.SneakerStore.services.*;
-import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -21,7 +19,6 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 @Controller
 @RequiredArgsConstructor
