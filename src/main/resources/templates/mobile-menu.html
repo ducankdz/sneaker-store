@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+
+<!-- Mirrored from portotheme.com/html/molla/index-6.html by HTTrack Website Copier/3.x [XR&CO'2014], Fri, 19 Jan 2024 03:00:21 GMT -->
+<!-- Added by HTTrack --><meta http-equiv="content-type" content="text/html;charset=UTF-8" /><!-- /Added by HTTrack -->
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <title>Sneaker Store</title>
+    <meta name="keywords" content="HTML5 Template">
+    <meta name="description" content="Molla - Bootstrap eCommerce Template">
+    <meta name="author" content="p-themes">
+    <!-- Favicon -->
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/assets/images/icons/apple-touch-icon.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/assets/images/icons/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/assets/images/icons/favicon-16x16.png}">
+    <link rel="manifest" th:href="@{/assets/images/icons/site.html}">
+    <link rel="mask-icon" th:href="@{/assets/images/icons/safari-pinned-tab.svg}" color="#666666">
+    <link rel="shortcut icon" th:href="@{/assets/images/icons/favicon.ico}">
+    <meta name="apple-mobile-web-app-title" content="Molla">
+    <meta name="application-name" content="Molla">
+    <meta name="msapplication-TileColor" content="#cc9966">
+    <meta name="msapplication-config" th:href="@{/assets/images/icons/browserconfig.xml}">
+    <meta name="theme-color" content="#ffffff">
+    <link rel="stylesheet" th:href="@{/assets/vendor/line-awesome/line-awesome/line-awesome/css/line-awesome.min.css}">
+    <!-- Plugins CSS File -->
+    <link rel="stylesheet" href="../static/assets/css/bootstrap.min.css" th:href="@{/assets/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/owl-carousel/owl.carousel.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/magnific-popup/magnific-popup.css}">
+    <link rel="stylesheet" th:href="@{/assets/css/plugins/jquery.countdown.css}">
+    <!-- Main CSS File -->
+    <link rel="stylesheet" href="../static/assets/css/style.css" th:href="@{/assets/css/style.css}">
+    <link rel="stylesheet" href="../static/assets/css/skins/skin-demo-6.css" th:href="@{/assets/css/skins/skin-demo-6.css}">
+    <link rel="stylesheet" href="../static/assets/css/demos/demo-6.css" th:href="@{/assets/css/demos/demo-6.css}">
+</head>
+<body>
+    <div th:fragment="menu">
+        <!-- Mobile Menu -->
+        <div class="mobile-menu-overlay"></div><!-- End .mobil-menu-overlay -->
+
+        <div class="mobile-menu-container">
+            <div class="mobile-menu-wrapper">
+                <span class="mobile-menu-close"><i class="icon-close"></i></span>
+
+                <form th:action="@{/products/search}" method="get" class="mobile-search">
+                    <label for="mobile-search" class="sr-only">Tìm Kiếm</label>
+                    <input type="search" class="form-control" name="mobile-search" id="mobile-search" placeholder="Tìm Sản Phẩm .." required>
+                    <button class="btn btn-primary" type="submit"><i class="icon-search"></i></button>
+                </form>
+
+                <nav class="mobile-nav">
+                    <ul class="mobile-menu">
+                        <li class="megamenu-container" th:classappend="${currentUrl.equals('/') ? 'active' : ''}">
+                            <a th:href="@{/}">Trang chủ</a>
+                        </li>
+                        <li class="megamenu-container" th:classappend="${currentUrl.equals('/products') ? 'active' : ''}">
+                            <a th:href="@{/products}">Sản Phẩm</a>
+                        </li>
+                        <li class="megamenu-container" th:classappend="${currentUrl.equals('/categories') ? 'active' : ''}">
+                            <a th:href="@{/categories}">Danh mục</a>
+                        </li>
+                        <li class="megamenu-container" th:classappend="${currentUrl.equals('/contact') ? 'active' : ''}">
+                            <a th:href="@{/contact}">Liên Hệ</a>
+                        </li>
+                        <li class="megamenu-container" th:classappend="${currentUrl.equals('/blog') ? 'active' : ''}">
+                            <a th:href="@{/blog}">Blog</a>
+                        </li>
+                        <li class="megamenu-container" th:classappend="${currentUrl.equals('/faq') ? 'active' : ''}">
+                            <a th:href="@{/faq}">FAQ</a>
+                        </li>
+                    </ul>
+                </nav><!-- End .mobile-nav -->
+
+                <div class="social-icons">
+                    <a href="#" class="social-icon" target="_blank" title="Facebook"><i class="icon-facebook-f"></i></a>
+                    <a href="#" class="social-icon" target="_blank" title="Twitter"><i class="icon-twitter"></i></a>
+                    <a href="#" class="social-icon" target="_blank" title="Instagram"><i class="icon-instagram"></i></a>
+                    <a href="#" class="social-icon" target="_blank" title="Youtube"><i class="icon-youtube"></i></a>
+                </div><!-- End .social-icons -->
+            </div><!-- End .mobile-menu-wrapper -->
+        </div><!-- End .mobile-menu-container -->
+    </div>
+</body>
+</html>
