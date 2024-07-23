@@ -188,6 +188,9 @@
     <div th:if="${message!=null}">
         <div th:replace="/message :: alrtFragment(${message})"></div>
     </div>
+    <div th:if="${errorMessage != null}">
+        <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
+    </div>
     <!-- Mobile Menu -->
     <div th:replace="/mobile-menu :: menu"></div>
     <!-- Plugins JS File -->

@@ -401,8 +401,12 @@
 </div>
 
 
-<div th:if="${message!=null}">
+<div th:if="${message != null}">
   <div th:replace="/message :: alrtFragment(${message})"></div>
+</div>
+
+<div th:if="${errorMessage != null}">
+  <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
 </div>
 
 <!-- Jquery JS-->

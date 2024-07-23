@@ -1,6 +1,8 @@
 package com.ecommerce.SneakerStore.dtos;
 
+import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Size;
 import lombok.*;
 
 @Data
@@ -9,15 +11,17 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 public class UserDTO {
-    @NotEmpty(message = "Phone number is required")
+    @NotEmpty(message = "SĐT là bắt buộc")
+    @Size(min = 10, max = 10,message = "SĐT phải có 10 chữ số")
     private String phoneNumber;
 
-    @NotEmpty(message = "Password is required")
+    @NotBlank(message = "Mật khẩu là bắt buộc")
+    @Size(min = 8, message = "Mật khẩu phải có ít nhất 8 ký tự")
     private String password;
 
-    @NotEmpty(message = "Retype password is required")
+    @NotBlank(message = "Mật khẩu nhập lại là bắt buộc")
     private String retypePassword;
 
-    @NotEmpty(message = "Name is required")
+    @NotEmpty(message = "Tên là bắt buộc")
     private String name;
 }

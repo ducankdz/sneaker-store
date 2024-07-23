@@ -443,8 +443,12 @@
 
         <div th:replace="/footer :: footer"></div>
     </div><!-- End .page-wrapper -->
-    <div th:if="${message!=null}">
+    <div th:if="${message != null}">
         <div th:replace="/message :: alrtFragment(${message})"></div>
+    </div>
+
+    <div th:if="${errorMessage != null}">
+        <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
     </div>
 
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>

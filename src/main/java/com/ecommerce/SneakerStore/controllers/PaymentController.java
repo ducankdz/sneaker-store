@@ -52,9 +52,9 @@ public class PaymentController {
 
             return "redirect:/";
         }
-        redirectAttributes.addFlashAttribute("message",
+        redirectAttributes.addFlashAttribute("errorMessage",
                 "Đặt hàng không thành công");
-        return "redirect:/404";
+        return "redirect:/";
     }
 
     @GetMapping("/paypal")
@@ -76,8 +76,8 @@ public class PaymentController {
 
             return "redirect:/";
         }
-        redirectAttributes.addFlashAttribute("message",
+        redirectAttributes.addFlashAttribute("errorMessage",
                 "Đặt hàng không thành công");
-        return "redirect:/404";
+        return "redirect:/";
     }
 }

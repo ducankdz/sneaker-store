@@ -34,7 +34,9 @@ public class AdminController {
     @GetMapping("")
     public String displayAdminHome(Model model){
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
 
         int countUsers = userService.getUsers().size();
         long productsSold = productService.countProductsSold();
@@ -80,8 +82,9 @@ public class AdminController {
             category.setProductCount(categoryService.countProductByCategoryId(category.getId()));
         }
         String message = (String) model.asMap().get("message");
-        System.out.println("Thong bao: " + message);
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
         model.addAttribute("categories",categories);
         model.addAttribute("categoryDTO",new CategoryDTO());
         return "admin_category";
@@ -91,10 +94,12 @@ public class AdminController {
                               @ModelAttribute("categoryDTO") CategoryDTO categoryDTO){
         try {
             Category category = categoryService.addCategory(categoryDTO);
-            redirectAttributes.addFlashAttribute("message","Thêm danh mục thành công");
+            redirectAttributes.addFlashAttribute("message",
+                    "Thêm danh mục thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Thêm danh mục thất bại");
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Thêm danh mục thất bại");
         }
         return "redirect:/admin/category";
     }
@@ -103,10 +108,12 @@ public class AdminController {
                                  @PathVariable("id") Long id){
         try {
             categoryService.deleteById(id);
-            redirectAttributes.addFlashAttribute("message","Xoá danh mục thành công");
+            redirectAttributes.addFlashAttribute("message",
+                    "Xoá danh mục thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Xoá danh mục thất bại");
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Xoá danh mục thất bại");
         }
         return "redirect:/admin/category";
     }
@@ -116,10 +123,12 @@ public class AdminController {
                                  @ModelAttribute("categoryDTO") CategoryDTO categoryDTO){
         try {
             Category category = categoryService.updateCategory(categoryDTO,id);
-            redirectAttributes.addFlashAttribute("message","Cập nhật danh mục thành công");
+            redirectAttributes.addFlashAttribute("message",
+                    "Cập nhật danh mục thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Cập nhật danh mục thất bại");
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Cập nhật danh mục thất bại");
         }
         return "redirect:/admin/category";
     }
@@ -127,7 +136,9 @@ public class AdminController {
     @GetMapping("/product")
     public String displayAdminProduct(Model model){
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
 
         model.addAttribute("productDTO", new ProductDTO());
         model.addAttribute("categories",categoryService.getCategories());
@@ -148,7 +159,7 @@ public class AdminController {
                     "Thêm sản phẩm mới thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Thêm sản phẩm mới thất bại");
         }
         return "redirect:/admin/product";
@@ -163,7 +174,7 @@ public class AdminController {
                     "Xoá sản phẩm thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Xoá sản phẩm thất bại");
         }
         return "redirect:/admin/product";
@@ -180,7 +191,7 @@ public class AdminController {
                     "Cập nhật sản phẩm thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Cập nhật sản phẩm thất bại");
         }
         return "redirect:/admin/product";
@@ -188,7 +199,9 @@ public class AdminController {
     @GetMapping("/user")
     public String displayAdminUser(Model model){
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
 
         List<User> users = userService.getUsers();
         model.addAttribute("users",users);
@@ -205,7 +218,7 @@ public class AdminController {
                     "Cập nhật vai trò người dùng thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Cập nhật vai trò người dùng thất bại");
         }
         return "redirect:/admin/user";
@@ -219,7 +232,7 @@ public class AdminController {
                     "Mở khoá tài khoản người dùng thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Mở khoá tài khoản người dùng thất bại");
         }
         return "redirect:/admin/user";
@@ -234,7 +247,7 @@ public class AdminController {
                     "Khoá tài khoản người dùng thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Khoá tài khoản người dùng thất bại");
         }
         return "redirect:/admin/user";
@@ -243,7 +256,9 @@ public class AdminController {
     @GetMapping("/order")
     public String displayAdminOrder(Model model){
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
 
 
         List<OrderResponse> orders = orderService.getOrders();
@@ -262,7 +277,7 @@ public class AdminController {
                     "Cập nhật đơn hàng thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Cập nhật đơn hàng thất bại");
         }
         return "redirect:/admin/order";
@@ -271,7 +286,9 @@ public class AdminController {
     @GetMapping("/coupon")
     public String displayAdminCoupon(Model model){
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
         model.addAttribute("couponDTO",new CouponDTO());
 
         List<Coupon> coupons = couponService.getCoupons();
@@ -287,7 +304,7 @@ public class AdminController {
                     "Thêm Coupon thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Thêm Coupon thất bại");
         }
         return "redirect:/admin/coupon";
@@ -302,7 +319,7 @@ public class AdminController {
                     "Cập nhật Coupon thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Cập nhật Coupon thất bại");
         }
         return "redirect:/admin/coupon";
@@ -316,7 +333,7 @@ public class AdminController {
                     "Xoá Coupon thành công");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Xoá Coupon thất bại");
         }
         return "redirect:/admin/coupon";

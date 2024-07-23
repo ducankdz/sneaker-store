@@ -19,7 +19,7 @@ public class CategoryService {
 
     public Category addCategory(CategoryDTO categoryDTO) throws Exception {
         if(categoryRepository.existsByName(categoryDTO.getName())){
-            throw new Exception("Category name existed");
+            throw new Exception("Tên danh mục đã tồn tại");
         }
         Category category = Category.builder()
                 .name(categoryDTO.getName())
@@ -28,15 +28,15 @@ public class CategoryService {
     }
     public Category getCategoryById(Long id) throws Exception {
         return categoryRepository.findById(id)
-                .orElseThrow(() -> new Exception("Cannot find category with id = " + id));
+                .orElseThrow(() -> new Exception("Danh mục không tồn tại"));
     }
 
     public Category updateCategory(CategoryDTO categoryDTO, Long id) throws Exception {
         Category existingCategory = categoryRepository.findById(id)
-                .orElseThrow(() -> new Exception("Cannot find category with id = " + id));
+                .orElseThrow(() -> new Exception("Danh mục không tồn tại"));
         String name = categoryDTO.getName();
         if(categoryRepository.existsByNameOfOtherCategories(name,id)){
-            throw new Exception("Category name existed");
+            throw new Exception("Tên danh mục đã tồn tại");
         }
         existingCategory.setName(name);
         return categoryRepository.save(existingCategory);

@@ -27,8 +27,7 @@ public class CartService {
     public Cart addToCart(CartItemDTO cartItemDTO, String token) throws Exception {
         User user = userService.getUserFromToken(token);
         Product product = productRepository.findById(cartItemDTO.getProductId())
-                .orElseThrow(() -> new Exception(
-                        "Cannot find product with id = " + cartItemDTO.getProductId()));
+                .orElseThrow(() -> new Exception("Sản phẩm không tồn tại"));
         Optional<Cart> optionalCart = cartRepository
                 .findByUserAndProductAndSize(user,product, cartItemDTO.getSize());
         if(optionalCart.isPresent()){
@@ -51,15 +50,15 @@ public class CartService {
     public void deleteCartById(Long id,String token) throws Exception {
         User user = userService.getUserFromToken(token);
         Cart cart = cartRepository.findById(id)
-                        .orElseThrow(() -> new Exception("Cannot find cart with id = " + id));
+                        .orElseThrow(() -> new Exception("Giỏ hàng không tồn tại"));
         if(!user.getId().equals(cart.getUser().getId())){
-            throw new Exception("Cannot delete with other user");
+            throw new Exception("Không thể xoá giỏ hàng của người khác");
         }
         cartRepository.deleteById(id);
     }
     public void updateQuantity(Long id, Long quantity) throws Exception {
         Cart existingCart = cartRepository.findById(id)
-                .orElseThrow(() -> new Exception("Cannot find cart item with id = " + id));
+                .orElseThrow(() -> new Exception("Giỏ hàng không tồn tại"));
         existingCart.setQuantity(quantity);
         cartRepository.save(existingCart);
     }

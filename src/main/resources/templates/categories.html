@@ -186,6 +186,9 @@
 <div th:if="${message!=null}">
     <div th:replace="/message :: alrtFragment(${message})"></div>
 </div>
+<div th:if="${errorMessage != null}">
+    <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
+</div>
 <!-- Plugins JS File -->
 <script th:src="@{/assets/js/jquery.min.js}"></script>
 <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>

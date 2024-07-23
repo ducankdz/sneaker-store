@@ -1,5 +1,6 @@
 package com.ecommerce.SneakerStore.services;
 
+import com.ecommerce.SneakerStore.dtos.ChangePasswordDTO;
 import com.ecommerce.SneakerStore.dtos.LoginDTO;
 import com.ecommerce.SneakerStore.dtos.UserDTO;
 import com.ecommerce.SneakerStore.entities.Role;
@@ -28,14 +29,14 @@ public class UserService {
     private final JwtTokenUtil jwtTokenUtil;
 
     public User register(UserDTO userDTO) throws Exception {
-        if(userRepository.existsByPhoneNumber(userDTO.getPhoneNumber())){
-            throw new Exception("Phone number already exists");
+        if (userRepository.existsByPhoneNumber(userDTO.getPhoneNumber())) {
+            throw new Exception("Số điện thoại đã tồn tại");
         }
-        if(!userDTO.getPassword().equals(userDTO.getRetypePassword())){
-            throw new Exception("Password does not match");
+        if (!userDTO.getPassword().equals(userDTO.getRetypePassword())) {
+            throw new Exception("Mật khẩu không khớp");
         }
         Role role = roleRepository.findById(1L)
-                .orElseThrow(() -> new Exception("Role does not exist"));
+                .orElseThrow(() -> new Exception("Vai trò không tồn tại"));
         User user = User.builder()
                 .phoneNumber(userDTO.getPhoneNumber())
                 .name(userDTO.getName())
@@ -47,9 +48,9 @@ public class UserService {
     }
     public String login(LoginDTO loginDTO) throws Exception {
         User user = userRepository.findByPhoneNumber(loginDTO.getPhoneNumber())
-                .orElseThrow(() -> new Exception("Wrong phone number or password"));
+                .orElseThrow(() -> new Exception("SĐT hoặc mật khẩu không chính xác"));
         if(!passwordEncoder.matches(loginDTO.getPassword(),user.getPassword())){
-            throw new BadCredentialsException("Wrong phone number or password");
+            throw new BadCredentialsException("SĐT hoặc mật khẩu không chính xác");
         }
         UsernamePasswordAuthenticationToken authenticationToken = new UsernamePasswordAuthenticationToken(
                 loginDTO.getPhoneNumber(),loginDTO.getPassword(),
@@ -62,10 +63,10 @@ public class UserService {
         String email = (String) authenticationToken.getPrincipal().getAttributes().get("email");
         String name = (String) authenticationToken.getPrincipal().getAttributes().get("name");
         Role role = roleRepository.findById(1L)
-                .orElseThrow(() -> new Exception("Role does not exist"));
+                .orElseThrow(() -> new Exception("Vai trò không tồn tại"));
         if(userRepository.existsByPhoneNumber(email)){
             User existingUser = userRepository.findByPhoneNumber(email)
-                    .orElseThrow(() -> new Exception("Wrong phone number or password"));
+                    .orElseThrow(() -> new Exception("SĐT hoặc mật khẩu không chính xác"));
             return jwtTokenUtil.generateToken(existingUser);
         }
         User newUser = User.builder()
@@ -80,24 +81,24 @@ public class UserService {
     }
     public User getUserFromToken(String token) throws Exception {
         if(jwtTokenUtil.isTokenExpired(token)){
-            throw new Exception("Token is expired");
+            throw new Exception("Token đã hết hạn");
         }
         String phoneNumber = jwtTokenUtil.extractPhoneNumber(token);
         return userRepository.findByPhoneNumber(phoneNumber)
-                .orElseThrow(() -> new Exception("Cannot find user"));
+                .orElseThrow(() -> new Exception("Không tìm thấy người dùng"));
     }
 
     public User updateUser(UserDTO userDTO,String token,Long id) throws Exception {
         String phoneNumber = userDTO.getPhoneNumber();
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new Exception("User doesn't exist"));
+                .orElseThrow(() -> new Exception("Người dùng không tồn tại"));
 
         if(!user.getId().equals(getUserFromToken(token).getId())){
-            throw new Exception("Cannot update another user");
+            throw new Exception("Không thể cập nhật người dùng khác");
         }
 
         if(userRepository.existByPhoneNumberForOtherUsers(phoneNumber,id)){
-            throw new Exception("Phone number already exists");
+            throw new Exception("SĐT đã tồn tại");
         }
 
         user.setName(userDTO.getName());
@@ -111,24 +112,42 @@ public class UserService {
         }
         return userRepository.save(user);
     }
+
+    public User updatePassword(ChangePasswordDTO changePasswordDTO, String token, Long id) throws Exception {
+        User user = userRepository.findById(getUserFromToken(token).getId())
+                .orElseThrow(() -> new Exception("User doesn't exist"));
+
+        if(!user.getId().equals(getUserFromToken(token).getId())){
+            throw new Exception("Cannot update another user");
+        }
+        if(!passwordEncoder.matches(changePasswordDTO.getOldPassword(), user.getPassword())){
+            throw new Exception("Mật khẩu cũ không chính xác");
+        }
+        if(!changePasswordDTO.getPassword().equals(changePasswordDTO.getRetypePassword())){
+            throw new Exception("Mật khẩu nhập lại không chính xác");
+        }
+        user.setPassword(passwordEncoder.encode(changePasswordDTO.getPassword()));
+        return userRepository.save(user);
+    }
+
     public User updateRole(Long id, Long roleId) throws Exception {
         User existingUser = userRepository.findById(id).orElseThrow(() ->
-                new Exception("Cannot find user with id = " + id));
+                new Exception("Người dùng không tồn tại"));
         Role role = roleRepository.findById(roleId).orElseThrow(() ->
-                new Exception("Cannot find role with id = " + roleId));
+                new Exception("Vai trò không tồn tại"));
         existingUser.setRole(role);
         return userRepository.save(existingUser);
     }
     public User lockUser(Long id) throws Exception {
         User existingUser = userRepository.findById(id).orElseThrow(() ->
-                new Exception("Cannot find user with id = " + id));
+                new Exception("Người dùng không tồn tại"));
         existingUser.setActive(false);
         return userRepository.save(existingUser);
     }
 
     public User unLockUser(Long id) throws Exception {
         User existingUser = userRepository.findById(id).orElseThrow(() ->
-                new Exception("Cannot find user with id = " + id));
+                new Exception("Người dùng không tồn tại"));
         existingUser.setActive(true);
         return userRepository.save(existingUser);
     }

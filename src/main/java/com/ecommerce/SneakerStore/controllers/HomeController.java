@@ -1,9 +1,6 @@
 package com.ecommerce.SneakerStore.controllers;
 
-import com.ecommerce.SneakerStore.dtos.CartItemDTO;
-import com.ecommerce.SneakerStore.dtos.LoginDTO;
-import com.ecommerce.SneakerStore.dtos.OrderDTO;
-import com.ecommerce.SneakerStore.dtos.UserDTO;
+import com.ecommerce.SneakerStore.dtos.*;
 import com.ecommerce.SneakerStore.entities.Cart;
 import com.ecommerce.SneakerStore.entities.User;
 import com.ecommerce.SneakerStore.entities.Wishlist;
@@ -45,8 +42,10 @@ public class HomeController {
         session.removeAttribute("message");
 
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
 
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
         model.addAttribute("loginMessage",loginMessage);
         model.addAttribute("cartItemDTO",new CartItemDTO());
         model.addAttribute("newProducts",productService.newProducts().stream().map(ProductResponse::fromProduct).collect(Collectors.toList()));
@@ -76,6 +75,7 @@ public class HomeController {
         }
         model.addAttribute("loginDTO",new LoginDTO());
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         return "login";
     }
     @GetMapping("/contact")
@@ -93,6 +93,7 @@ public class HomeController {
         List<WishlistResponse> wishlists = wishlistService.getWishListByUser(token);
         model.addAttribute("wishlists",wishlists);
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         return "wishlist";
     }
     @GetMapping("/register")
@@ -100,6 +101,8 @@ public class HomeController {
         if(isLoggedIn(session)){
             return "redirect:/";
         }
+        String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("userDTO",new UserDTO());
         return "register";
     }
@@ -123,7 +126,9 @@ public class HomeController {
         DecimalFormat decimalFormat = new DecimalFormat("#,###");
         model.addAttribute("subTotal",decimalFormat.format(subTotal));
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
         return "cart";
     }
     @PostMapping("/checkout")
@@ -168,8 +173,11 @@ public class HomeController {
         User user = userService.getUserFromToken(token);
         model.addAttribute("user",user);
         model.addAttribute("userDTO",new UserDTO());
+        model.addAttribute("changePasswordDTO",new ChangePasswordDTO());
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
         model.addAttribute("message",message);
+        model.addAttribute("errorMessage",errorMessage);
         return "my-account";
     }
 

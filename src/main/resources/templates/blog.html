@@ -366,7 +366,13 @@
     <div th:replace="footer :: footer"></div>
 </div><!-- End .page-wrapper -->
 <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
+<div th:if="${message != null}">
+    <div th:replace="/message :: alrtFragment(${message})"></div>
+</div>
 
+<div th:if="${errorMessage != null}">
+    <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
+</div>
 <!-- Mobile Menu -->
 <div th:replace="/mobile-menu :: menu"></div>
 <!-- Plugins JS File -->

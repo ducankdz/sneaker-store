@@ -74,9 +74,9 @@
 								</ul>
 	                		</aside><!-- End .col-lg-3 -->
 
-	                		<div class="col-md-8 col-lg-9">
-	                			<div class="tab-content">
-								    <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
+                            <div class="col-md-8 col-lg-9">
+                                <div class="tab-content">
+                                    <div class="tab-pane fade show active" id="tab-dashboard" role="tabpanel" aria-labelledby="tab-dashboard-link">
                                         <form th:action="@{'/users/update/' + ${user.id}}" th:object="${userDTO}" method="post">
                                             <label>Họ Tên *</label>
                                             <input th:name="name" th:id="name" th:value="${user.name}" type="text" class="form-control" required>
@@ -84,26 +84,38 @@
                                             <label>Số Điện Thoại *</label>
                                             <input th:name="phoneNumber" th:id="phoneNumber" th:value="${user.phoneNumber}" disabled type="text" class="form-control" required>
 
-                                            <label>Mật Khẩu</label>
-                                            <input th:field="*{password}" type="password" class="form-control" >
+                                            <button type="submit" class="btn btn-outline-primary-2">
+                                                <span>Lưu Thay Đổi</span>
+                                                <i class="icon-long-arrow-right"></i>
+                                            </button>
+                                        </form>
+                                    </div><!-- .End .tab-pane -->
 
-                                            <label>Nhập Lại Mật Khẩu</label>
-                                            <input th:field="*{retypePassword}" type="password" class="form-control" >
+                                    <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
+                                        <form th:action="@{'/users/password/update/' + ${user.id}}" th:object="${changePasswordDTO}" method="post">
+                                            <label>Mật Khẩu Cũ</label>
+                                            <input th:field="*{oldPassword}" id="old-password" type="password" class="form-control" >
+
+                                            <label>Mật Khẩu Mới</label>
+                                            <input th:field="*{password}" id="new-password" type="password" class="form-control" >
+
+                                            <label>Nhập Lại Mật Khẩu Mới</label>
+                                            <input th:field="*{retypePassword}" id="retype-new-password" type="password" class="form-control" >
+
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="show-password" onclick="togglePassword()">
+                                                <label class="custom-control-label" for="show-password">Hiển thị mật khẩu</label>
+                                            </div><!-- End .custom-checkbox -->
 
                                             <button type="submit" class="btn btn-outline-primary-2">
                                                 <span>Lưu Thay Đổi</span>
                                                 <i class="icon-long-arrow-right"></i>
                                             </button>
                                         </form>
-								    </div><!-- .End .tab-pane -->
-
-                                    <div class="tab-pane fade" id="tab-orders" role="tabpanel" aria-labelledby="tab-orders-link">
-                                        <p>Xoá tài khoản.</p>
-                                        <a href="#" class="btn btn-outline-primary-2"><span>Xoá Bỏ</span><i class="icon-long-arrow-right"></i></a>
                                     </div><!-- .End .tab-pane -->
 
-								</div>
-	                		</div><!-- End .col-lg-9 -->
+                                </div>
+                            </div><!-- End .col-lg-9 -->
 	                	</div><!-- End .row -->
 	                </div><!-- End .container -->
                 </div><!-- End .dashboard -->
@@ -115,6 +127,10 @@
     <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
     <div th:if="${message != null}">
         <div th:replace="/message :: alrtFragment(${message})"></div>
+    </div>
+
+    <div th:if="${errorMessage != null}">
+        <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
     </div>
     <!-- Mobile Menu -->
     <div th:replace="/mobile-menu :: menu"></div>
@@ -166,6 +182,22 @@
     <!-- Main JS File -->
     <script th:src="@{/assets/js/main.js}"></script>
     <script th:src="@{/assets/js/demos/demo-6.js}"></script>
+    <script>
+        function togglePassword() {
+            var oldPassword = document.getElementById("old-password");
+            var newPassword = document.getElementById("new-password");
+            var retypeNewPassword = document.getElementById("retype-new-password");
+            if (oldPassword.type === "password") {
+                oldPassword.type = "text";
+                newPassword.type = "text";
+                retypeNewPassword.type = "text";
+            } else {
+                oldPassword.type = "password";
+                newPassword.type = "password";
+                retypeNewPassword.type = "password";
+            }
+        }
+    </script>
 </body>
 
 

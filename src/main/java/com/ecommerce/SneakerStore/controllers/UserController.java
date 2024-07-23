@@ -12,6 +12,7 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -32,19 +33,48 @@ public class UserController {
 
     @PostMapping("/register")
     public String register(Model model,
-                           @Valid @ModelAttribute("userDTO") UserDTO userDTO) throws Exception {
-        User user = userService.register(userDTO);
-        model.addAttribute("user",user);
-        model.addAttribute("loginDTO",new LoginDTO());
-        return "login";
+                           @Valid @ModelAttribute("userDTO") UserDTO userDTO,
+                           BindingResult bindingResult) throws Exception {
+        if (bindingResult.hasErrors()) {
+            // Collect validation errors
+            String errorMessage = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            model.addAttribute("errorMessage", errorMessage);
+            return "/register";
+        }
+
+        try {
+            User user = userService.register(userDTO);
+            model.addAttribute("user", user);
+            model.addAttribute("loginDTO", new LoginDTO());
+            model.addAttribute("message","Đăng ký thành công");
+            return "login";
+        } catch (Exception e) {
+            model.addAttribute("errorMessage", e.getMessage());
+            return "/register";
+        }
     }
+
 
     @PostMapping("/login")
     public String login(RedirectAttributes redirectAttributes,
                         Model model,
                         @Valid @ModelAttribute("loginDTO") LoginDTO loginDTO,
+                        BindingResult bindingResult,
                         HttpServletResponse response,
                         HttpSession session) throws Exception {
+        if (bindingResult.hasErrors()) {
+            // Collect validation errors
+            String errorMessage = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            model.addAttribute("errorMessage", errorMessage);
+            return "/login";
+        }
+
         try {
             String token = userService.login(loginDTO);
             model.addAttribute("token",token);
@@ -83,7 +113,7 @@ public class UserController {
             return "redirect:/admin";
         }
         catch (Exception e){
-            model.addAttribute("errorMessage", "Số điện thoại hoặc mật khẩu không chính xác.");
+            model.addAttribute("errorMessage",e.getMessage());
             return "/login";
         }
     }
@@ -115,7 +145,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message",
                     "Thêm vào giỏ hàng thành công.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Thêm vào giỏ hàng thất bại.");
         }
         return "redirect:" + currentUrl;
@@ -130,7 +160,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message",
                     "Xoá giỏ hàng thành công.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message",
+            redirectAttributes.addFlashAttribute("errorMessage",
                     "Xoá giỏ hàng thất bại.");
         }
         return "redirect:" + currentUrl;
@@ -149,7 +179,7 @@ public class UserController {
         }
         catch (Exception e){
             redirectAttributes.addFlashAttribute(
-                    "message",
+                    "errorMessage",
                     "Thêm vào yêu thích thất bại.");
         }
         return "redirect:/wishlist";
@@ -167,7 +197,7 @@ public class UserController {
         }
         catch (Exception e){
             redirectAttributes.addFlashAttribute(
-                    "message",
+                    "errorMessage",
                     "Xoá khỏi yêu thích thất bại");
         }
         return "redirect:/wishlist";
@@ -184,7 +214,7 @@ public class UserController {
                     "Xóa khỏi giỏ hàng thành công.");
         } catch (Exception e) {
             redirectAttributes.addFlashAttribute(
-                    "message",
+                    "errorMessage",
                     "Xóa khỏi giỏ hàng thất bại.");
         }
         return "redirect:/cart"; // Chuyển hướng về trang giỏ hàng sau khi xóa
@@ -207,7 +237,7 @@ public class UserController {
         }
         catch (Exception e){
             redirectAttributes.addFlashAttribute(
-                    "message",
+                    "errorMessage",
                     "Cập nhật giỏ hàng thất bại.");
         }
 
@@ -217,20 +247,60 @@ public class UserController {
     public String updateUser(@CookieValue("authToken") String token,
                              RedirectAttributes redirectAttributes,
                              @PathVariable("id") Long id,
-                             @ModelAttribute("userDTO") UserDTO userDTO,
+                             @Valid @ModelAttribute("userDTO") UserDTO userDTO,
+                             BindingResult bindingResult,
                              HttpSession session) throws Exception {
-        String message;
-        if(!userDTO.getPassword().equals(userDTO.getRetypePassword())){
-            message = "Mật khẩu nhập lại không khớp";
+        if (bindingResult.hasErrors()) {
+            // Collect validation errors
+            String errorMessage = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            return "redirect:/account";
         }
-        else{
+        try {
             User user = userService.updateUser(userDTO,token,id);
-            message = "Cập nhật thông tin thành công";
             session.setAttribute("loggedInUser", user);
+            redirectAttributes.addFlashAttribute("message",
+                    "Cập nhật thông tin thành công");
         }
-        redirectAttributes.addFlashAttribute("message",message);
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    e.getMessage());
+        }
         return "redirect:/account";
     }
+
+    @PostMapping("/password/update/{id}")
+    public String changePassword(@CookieValue("authToken") String token,
+                                 @PathVariable("id") Long id,
+                                 RedirectAttributes redirectAttributes,
+                                 @Valid @ModelAttribute("changePasswordDTO") ChangePasswordDTO changePasswordDTO,
+                                 BindingResult bindingResult,
+                                 HttpSession session){
+        if (bindingResult.hasErrors()) {
+            // Collect validation errors
+            String errorMessage = bindingResult.getFieldErrors()
+                    .stream()
+                    .map(error -> error.getDefaultMessage())
+                    .collect(Collectors.joining(", "));
+            redirectAttributes.addFlashAttribute("errorMessage", errorMessage);
+            return "redirect:/account";
+        }
+        try {
+            User user = userService.updatePassword(changePasswordDTO,token,id);
+            session.setAttribute("loggedInUser", user);
+            redirectAttributes.addFlashAttribute("message",
+                    "Cập nhật mật khẩu thành công");
+        }
+        catch (Exception e){
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    e.getMessage());
+        }
+        return "redirect:/account";
+    }
+
     @PostMapping("/comment/add")
     private String addComment(@CookieValue("authToken") String token,
                               @ModelAttribute("commentDTO")CommentDTO commentDTO,
@@ -240,7 +310,7 @@ public class UserController {
             redirectAttributes.addFlashAttribute("message","Đánh giá thành công.");
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message","Đánh giá thất bại.");
+            redirectAttributes.addFlashAttribute("errorMessage","Đánh giá thất bại.");
         }
         return "redirect:/products/" + commentDTO.getProductId();
     }
@@ -259,7 +329,7 @@ public class UserController {
             reactionService.addReaction(reactionDTO,token);
             redirectAttributes.addFlashAttribute("message","Reaction thành công.");
         } catch (Exception e) {
-            redirectAttributes.addFlashAttribute("message","Reaction thất bại");
+            redirectAttributes.addFlashAttribute("errorMessage","Reaction thất bại");
         }
         return "redirect:/products/" + comment.getProduct().getId();
     }

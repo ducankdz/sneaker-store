@@ -25,8 +25,7 @@ public class CommentService {
         User user = userService.getUserFromToken(token);
 
         Product product = productRepository.findById(commentDTO.getProductId())
-                .orElseThrow(() -> new Exception(
-                        "Cannot find product with id =" + commentDTO.getProductId()));
+                .orElseThrow(() -> new Exception("Sản phẩm không tồn tại"));
 
         Comment comment = Comment
                 .builder()
@@ -48,7 +47,7 @@ public class CommentService {
     public CommentResponse getCommentById(Long id) throws Exception {
         Optional<Comment> optionalComment = commentRepository.findById(id);
         if (optionalComment.isEmpty()){
-            throw new Exception("Cannot find comment");
+            throw new Exception("Đánh giá không tồn tại");
         }
         return CommentResponse.fromComment(optionalComment.get());
     }

@@ -89,6 +89,7 @@ public class WebSecurityConfig {
                             .requestMatchers(GET, "/orders/rebuy/**").hasRole(Role.USER)
                             .requestMatchers(GET, "/account").hasRole(Role.USER)
                             .requestMatchers(POST, "/users/update/**").hasRole(Role.USER)
+                            .requestMatchers(POST, "/users/password/update/**").hasRole(Role.USER)
                             .requestMatchers(POST, "/users/comment/add").hasRole(Role.USER)
                             .requestMatchers(GET, "/users/reaction/add").hasRole(Role.USER)
                             .requestMatchers(GET, "/payment/vnpay**").hasRole(Role.USER)

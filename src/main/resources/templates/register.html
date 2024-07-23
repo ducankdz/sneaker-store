@@ -92,8 +92,8 @@
                     </button>
 
                     <div class="custom-control custom-checkbox">
-                      <input type="checkbox" class="custom-control-input" id="register-policy-2" checked>
-                      <label class="custom-control-label" for="register-policy-2">Tôi đồng ý với <a href="#">chính sách riêng tư</a> *</label>
+                      <input type="checkbox" class="custom-control-input" id="show-password" onclick="togglePassword()">
+                      <label class="custom-control-label" for="show-password">Hiển thị mật khẩu</label>
                     </div><!-- End .custom-checkbox -->
                   </div><!-- End .form-footer -->
                 </form>
@@ -125,7 +125,12 @@
   <div th:replace="/footer :: footer"></div>
 </div><!-- End .page-wrapper -->
 <button id="scroll-top" title="Back to Top"><i class="icon-arrow-up"></i></button>
-
+<div th:if="${errorMessage != null}">
+  <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
+</div>
+<div th:if="${message != null}">
+  <div th:replace="/message :: alrtFragment(${message})"></div>
+</div>
 <!-- Mobile Menu -->
 <div th:replace="/mobile-menu :: menu"></div>
 <!-- Plugins JS File -->
@@ -142,6 +147,19 @@
 <!-- Main JS File -->
 <script th:src="@{/assets/js/main.js}"></script>
 <script th:src="@{/assets/js/demos/demo-6.js}"></script>
+<script>
+  function togglePassword() {
+    var password = document.getElementById("register-password-2");
+    var retypePassword = document.getElementById("register-retype-password-2");
+    if (password.type === "password") {
+      password.type = "text";
+      retypePassword.type = "text";
+    } else {
+      password.type = "password";
+      retypePassword.type = "password";
+    }
+  }
+</script>
 </body>
 
 

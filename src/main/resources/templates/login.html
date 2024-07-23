@@ -72,22 +72,16 @@
 							    			<input th:field="*{password}" type="password" class="form-control" id="singin-password-2" name="singin-password" required>
 							    		</div><!-- End .form-group -->
 
-                                        <div th:if="${errorMessage != null}" class = "form-group" >
-                                            <p style="color: red;" th:text="${errorMessage}"></p>
-                                        </div>
-
 							    		<div class="form-footer">
 							    			<button type="submit" class="btn btn-outline-primary-2">
 			                					<span>ĐĂNG NHẬP</span>
 			            						<i class="icon-long-arrow-right"></i>
 			                				</button>
 
-			                				<div class="custom-control custom-checkbox">
-												<input type="checkbox" class="custom-control-input" id="signin-remember-2">
-												<label class="custom-control-label" for="signin-remember-2">Nhớ Mật Khẩu</label>
-											</div><!-- End .custom-checkbox -->
-
-											<a href="#" class="forgot-link">Quên Mật Khẩu?</a>
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="show-password" onclick="togglePassword()">
+                                                <label class="custom-control-label" for="show-password">Hiển thị mật khẩu</label>
+                                            </div><!-- End .custom-checkbox -->
 							    		</div><!-- End .form-footer -->
 							    	</form>
 							    	<div class="form-choice">
@@ -122,6 +116,12 @@
     <!-- Mobile Menu -->
     <div th:replace="/mobile-menu :: menu"></div>
 
+    <div th:if="${errorMessage != null}">
+        <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
+    </div>
+    <div th:if="${message != null}">
+        <div th:replace="/messager :: alrtFragment(${message})"></div>
+    </div>
     <!-- Plugins JS File -->
     <script th:src="@{/assets/js/jquery.min.js}"></script>
     <script th:src="@{/assets/js/bootstrap.bundle.min.js}"></script>
@@ -131,6 +131,16 @@
     <script th:src="@{assets/js/owl.carousel.min.js}"></script>
     <!-- Main JS File -->
     <script th:src="@{/assets/js/main.js}"></script>
+    <script>
+        function togglePassword() {
+            var password = document.getElementById("singin-password-2");
+            if (password.type === "password") {
+                password.type = "text";
+            } else {
+                password.type = "password";
+            }
+        }
+    </script>
 </body>
 
 

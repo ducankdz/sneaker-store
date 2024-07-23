@@ -66,8 +66,8 @@ public class OrderController {
                             "paypal",
                             "sale",
                             orderDTO.getNote(),
-                            "http://localhost:8087/products",
-                            "http://localhost:8087/payment/paypal"
+                            "https://sneaker-store.up.railway.app/products",
+                            "https://sneaker-store.up.railway.app/payment/paypal"
                     );
                     session.setAttribute("orderDTO", orderDTO);
                     for (Links link : payment.getLinks()) {
@@ -79,10 +79,11 @@ public class OrderController {
             }
         }
         catch (Exception e){
-            redirectAttributes.addFlashAttribute("message", "Đặt hàng không thành công");
-            return "redirect:/404";
+            redirectAttributes.addFlashAttribute("errorMessage",
+                    "Đặt hàng không thành công");
+            return "redirect:/";
         }
-        return "redirect:/404";
+        return "redirect:/";
     }
     @GetMapping("/user/{userId}")
     public String getOrderByUser(Model model,

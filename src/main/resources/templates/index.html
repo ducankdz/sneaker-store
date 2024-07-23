@@ -495,7 +495,15 @@
                         </a>
 
                         <a th:href="@{/products/category/6}" class="brand">
-                            <img th:src="@{/assets/images/brands/puma-logo-1.png}" alt="Puma">
+                            <img th:src="@{/assets/images/brands/mlb-logo.png}" alt="MLB">
+                        </a>
+
+                        <a th:href="@{/products/category/7}" class="brand">
+                            <img th:src="@{/assets/images/brands/onitsuka-tiger-logo.png}" alt="Onitsuka Tiger">
+                        </a>
+
+                        <a th:href="@{/products/category/8}" class="brand">
+                            <img th:src="@{/assets/images/brands/asics-logo.png}" alt="ASICS">
                         </a>
                     </div><!-- End .owl-carousel -->
                 </div><!-- End .container -->
@@ -643,6 +651,10 @@
     </div>
     <div th:if="${loginMessage!=null}">
         <div th:replace="/message :: alrtFragment(${loginMessage})"></div>
+    </div>
+
+    <div th:if="${errorMessage != null}">
+        <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
     </div>
 
     <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel" aria-hidden="true">

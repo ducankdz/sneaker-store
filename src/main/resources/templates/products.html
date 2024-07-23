@@ -312,6 +312,9 @@
 <div th:if="${message!=null}">
   <div th:replace="/message :: alrtFragment(${message})"></div>
 </div>
+<div th:if="${errorMessage != null}">
+  <div th:replace="/message_error :: alrtFragment(${errorMessage})"></div>
+</div>
 <div class="modal fade" id="cart-modal" tabindex="-1" role="dialog" aria-labelledby="signinModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-dialog-centered" role="document">
     <div class="modal-content">

@@ -71,6 +71,7 @@ public class ProductController {
         List<CommentResponse> comments = commentService.getCommentsByProductId(id);
 
         String message = (String) model.asMap().get("message");
+        String errorMessage = (String) model.asMap().get("errorMessage");
 
         long sum = 0;
         for (CommentResponse cr : comments) {
@@ -118,6 +119,7 @@ public class ProductController {
 
         model.addAttribute("avg", avg);
         model.addAttribute("message", message);
+        model.addAttribute("errorMessage", errorMessage);
         model.addAttribute("product", product);
         model.addAttribute("comments", updatedComments);
         model.addAttribute("relatedProducts", relatedProducts);
@@ -125,7 +127,6 @@ public class ProductController {
         model.addAttribute("cartItemDTO", new CartItemDTO());
         model.addAttribute("commentDTO", new CommentDTO());
         model.addAttribute("reactionDTO", new ReactionDTO());
-        System.out.println("MSG: " + message);
         return "product-detail";
     }
 
