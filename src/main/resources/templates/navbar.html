@@ -62,8 +62,8 @@
                         </div><!-- End .soial-icons -->
                         <ul class="top-menu top-link-menu">
                             <li>
+                                <a href="#">Links</a>
                                 <ul>
-                                    <!-- Kiểm tra xem người dùng đã đăng nhập hay chưa -->
                                     <li th:if="${session.loggedInUser == null}">
                                         <a th:href="@{/login}"><i class="icon-user"></i> Đăng Nhập</a> /
                                         <a th:href="@{/register}">Đăng Ký</a>
@@ -87,15 +87,6 @@
                                 </ul>
                             </li>
                         </ul><!-- End .top-menu -->
-                        <div class="header-dropdown">
-                            <a href="#">Ngôn Ngữ</a>
-                            <div class="header-menu">
-                                <ul>
-                                    <li><a href="#">English</a></li>
-                                    <li><a href="#">Tiếng Việt</a></li>
-                                </ul>
-                            </div><!-- End .header-menu -->
-                        </div><!-- End .header-dropdown -->
                     </div><!-- End .header-right -->
                 </div>
             </div>

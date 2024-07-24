@@ -2793,7 +2793,7 @@ p {
     display: block; } }
 @media screen and (max-width: 575px) {
   .header-6 .header-dropdown {
-    display: none; }
+    display: block; }
 
   .header-6 .cart-dropdown,
   .header-6 .compare-dropdown {
