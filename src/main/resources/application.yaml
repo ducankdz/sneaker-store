@@ -1,15 +1,12 @@
-server:
-  port: 8080
-
 spring:
   datasource:
-    url: jdbc:mysql://viaduct.proxy.rlwy.net:52584/railway?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh
+    url: jdbc:mysql://centerbeam.proxy.rlwy.net:22320/railway?useSSL=false&serverTimezone=Asia/Ho_Chi_Minh
     driver-class-name: com.mysql.cj.jdbc.Driver
     username: root
-    password: XiILyaUQgkfcZNRlkyCEJDRhGEqqWkZK
+    password: UZWuwPuBLGzzlaRbNsURnIowrlncNBOX
 
   jpa:
-    show-sql: true
+    show-sql: false
     hibernate:
       ddl-auto: update
     properties:
@@ -54,4 +51,5 @@ paypal:
   client:
     id: Ab_XzSvS2Y4Xt_Rh4Ka0fIx0wvg1OdQuyRpnHwlZkziyhALBR7nLulyRlxQ4ylXcDoL00y7v2kdjyn93
     secret: EFcYw7mLeykugw7IH_8C7FAmUiu9m1USPqtzVgmCmcOeATWewwCq1-G3weXfvZvTB6GWoa4BYNf5rOEl
+
 
